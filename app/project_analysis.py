@@ -7,6 +7,11 @@ Provides functionality to analyze GitHub projects and assess contribution readin
 import streamlit as st
 
 
+# Scoring constants for readiness calculation
+READINESS_CONTRIBUTION_WEIGHT = 0.7  # Weight given to user's contribution level
+READINESS_BASE_SCORE = 30  # Base readiness score added to weighted contribution level
+
+
 def show_project_analysis_page():
     """Display the project analysis page with input fields and dummy results."""
     st.title("📊 Project Analysis")
@@ -89,8 +94,8 @@ def display_dummy_analysis(github_url, tech_stack, contribution_level):
     # Contribution Readiness
     st.subheader("🎯 Contribution Readiness Assessment")
     
-    # Calculate readiness score (dummy calculation)
-    readiness_score = min(100, (contribution_level * 0.7 + 30))
+    # Calculate readiness score
+    readiness_score = min(100, (contribution_level * READINESS_CONTRIBUTION_WEIGHT + READINESS_BASE_SCORE))
     
     st.progress(readiness_score / 100)
     st.write(f"**Your Readiness Score: {readiness_score:.0f}/100**")

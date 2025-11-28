@@ -7,6 +7,14 @@ Provides functionality to analyze courses and assess their fit with career goals
 import streamlit as st
 
 
+# Scoring constants for course fit calculation
+FIT_SCORE_MAX = 95  # Maximum achievable fit score
+FIT_SCORE_BASE = 60  # Base fit score
+FIT_SCORE_PER_TOPIC = 8  # Points added per detected topic
+FIT_SCORE_DESCRIPTION_DIVISOR = 50  # Divisor for description length bonus
+FIT_SCORE_DESCRIPTION_MAX = 15  # Maximum bonus from description length
+
+
 def show_course_analysis_page():
     """Display the course analysis page with input fields and dummy results."""
     st.title("📚 Course Analysis")
@@ -102,8 +110,9 @@ def display_dummy_course_analysis(course_name, course_description):
     # Career Fit Assessment
     st.subheader("🎯 Career Fit Assessment")
     
-    # Calculate a dummy fit score based on description length and detected topics
-    fit_score = min(95, 60 + len(detected_topics) * 8 + min(len(course_description) // 50, 15))
+    # Calculate fit score based on detected topics and description length
+    description_bonus = min(len(course_description) // FIT_SCORE_DESCRIPTION_DIVISOR, FIT_SCORE_DESCRIPTION_MAX)
+    fit_score = min(FIT_SCORE_MAX, FIT_SCORE_BASE + len(detected_topics) * FIT_SCORE_PER_TOPIC + description_bonus)
     
     st.progress(fit_score / 100)
     st.write(f"**Overall Fit Score: {fit_score:.0f}/100**")
